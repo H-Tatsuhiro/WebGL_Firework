@@ -1,7 +1,7 @@
 window.addEventListener("DOMContentLoaded", init)
 
 function init() {
-    const width = 1980, height = 1000;
+    const width = window.innerWidth, height = window.innerHeight;
 
     const renderer = new THREE.WebGLRenderer({
         canvas: document.querySelector("#canvas")
@@ -33,7 +33,7 @@ function init() {
 
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
 
-    const line = new THREE.Line( geometry, material);
+    const line = new THREE.Line(geometry, material);
 
     scene.add(line);
 
@@ -47,4 +47,16 @@ function init() {
 
     // 初回実行
     renderer.render(scene, camera);
+
+    resizeEvent();
+
+    window.addEventListener("resize", resizeEvent);
+
+    function resizeEvent() {
+        const width = window.innerWidth, height = window.innerHeight;
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(width, height);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+    }
 }
