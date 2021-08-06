@@ -11,7 +11,6 @@ function init() {
 
     const scene = new THREE.Scene();
 
-    // カメラを作成
     const camera = new THREE.PerspectiveCamera(
         45,
         width / height,
@@ -20,7 +19,6 @@ function init() {
     );
     camera.position.set(0, 0, +1000);
 
-    // 箱を作成
     const material = new THREE.LineBasicMaterial({
         color: 0x990000
     });
@@ -37,15 +35,13 @@ function init() {
 
     scene.add(line);
 
-    // 平行光源
     const directionalLight = new THREE.DirectionalLight(
         0xffffff
     );
     directionalLight.position.set(1, 1, 1);
-    // シーンに追加
+
     scene.add(directionalLight);
 
-    // 初回実行
     renderer.render(scene, camera);
 
     resizeEvent();
