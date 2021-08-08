@@ -37,6 +37,16 @@ function init() {
 
     scene.add(line);
 
+    let vertices = [];
+    vertices.push(new THREE.Vector3(0, -400, 0));
+    const geo = new THREE.BufferGeometry().setFromPoints(vertices);
+    const points_material = new THREE.PointsMaterial({
+        size: 10,
+        color: 0xFFFFFF,
+    });
+    const mesh = new THREE.Points(geo, points_material);
+    scene.add(mesh)
+
     const directionalLight = new THREE.DirectionalLight(
         0xffffff
     );
@@ -60,11 +70,15 @@ function init() {
     }
 
     let moveToRight = true;
+    let moveToPlus = true;
 
     frameUpdate();
 
     function frameUpdate() {
         requestAnimationFrame(frameUpdate);
+
+        const sec = performance.now() / 1000;
+
         if (points[2].x == 350) {
             moveToRight = false;
         } else if (points[2].x == -350) {
@@ -81,6 +95,18 @@ function init() {
         const geometry = new THREE.BufferGeometry().setFromPoints(points);
         const line = new THREE.Line(geometry, material);
         scene.add(line);
+
+        let mt = true;
+        if (vertices[0].y <= 400 && vertices[0].y >= -400) {
+            if (mt) moveToPlus = 1;
+            else moveToPlus = -1;
+        } 
+        else if (vertices[0].y > 400) mt = false;
+        else if (vertices[0].y < -400) mt = true;
+        vertices[0].y += moveToPlus * sec * 5;
+        const geo = new THREE.BufferGeometry().setFromPoints(vertices);
+        const mesh = new THREE.Points(geo, points_material);
+        scene.add(mesh)
         renderer.render(scene, camera);
     }
 }
